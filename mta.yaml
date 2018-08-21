@@ -1,0 +1,46 @@
+ID: xsahaa
+_schema-version: '2.0'
+version: 0.0.1
+
+modules:
+
+ - name: xsahaa-be
+   type: java
+   path: java
+   parameters:
+     memory: 512M
+     buildpack: sap_java_buildpack
+   properties:
+     TARGET_RUNTIME: tomee
+     SAP_JWT_TRUST_ACL: '[{"clientid":"sb-xsahaa-be", "identityzone": "*"}]'
+     JBP_CONFIG_RESOURCE_CONFIGURATION: "['tomee/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'sales-hdi'}, 'tomee/webapps/ROOT/WEB-INF/web.xml': {'cors-origins':'https://<account>.<region>.sapanalytics.cloud'}]"
+   provides:
+    - name: xsahaa-be
+      properties:
+        url: ${default-url}
+   requires:
+    - name: sales-uaa
+    - name: sales-hdi
+
+ - name: xsahaa-rt
+   type: nodejs
+   path: approuter
+   parameters:
+     memory: 128M
+     buildpack: nodejs_buildpack
+   requires:
+    - name: sales-uaa
+    - name: xsahaa-be
+      group: destinations
+      properties:
+        name: xsahaa-be
+        url: ~{url}
+        forwardAuthToken: true
+   properties:
+     TENANT_HOST_PATTERN: '^(.*)-<space>-xsahaa-rt.cfapps.(.*).hana.ondemand.com'
+
+resources:
+ - name: sales-hdi
+   type: org.cloudfoundry.existing-service
+ - name: sales-uaa
+   type: org.cloudfoundry.existing-service

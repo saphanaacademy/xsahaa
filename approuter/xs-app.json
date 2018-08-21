@@ -1,0 +1,21 @@
+{
+	"welcomeFile": "index.html",
+	"authenticationMethod": "route",
+	"routes": [{
+		"source": "/sap/bc/ina",
+		"destination": "xsahaa-be",
+		"httpMethods": ["POST", "GET"],
+		"authenticationType": "xsuaa",
+		"scope": "$XSAPPNAME.USER"
+	}, {
+		"source": "/sap/bc/ina",
+		"destination": "xsahaa-be",
+		"httpMethods": ["OPTIONS"],
+		"authenticationType": "none"
+	}, {
+		"source": "^/(.*)",
+		"localDir": "resources",
+		"authenticationType": "xsuaa",
+		"scope": "$XSAPPNAME.USER"
+	}]
+}
