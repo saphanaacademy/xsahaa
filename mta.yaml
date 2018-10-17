@@ -13,7 +13,7 @@ modules:
    properties:
      TARGET_RUNTIME: tomee
      SAP_JWT_TRUST_ACL: '[{"clientid":"sb-xsahaa-be", "identityzone": "*"}]'
-     JBP_CONFIG_RESOURCE_CONFIGURATION: "['tomee/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'sales-hdi'}, 'tomee/webapps/ROOT/WEB-INF/web.xml': {'cors-origins':'https://<account>.<region>.sapanalytics.cloud'}]"
+     JBP_CONFIG_RESOURCE_CONFIGURATION: "['tomee/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'sales-hdi'}]"
    provides:
     - name: xsahaa-be
       properties:
@@ -38,6 +38,7 @@ modules:
         forwardAuthToken: true
    properties:
      TENANT_HOST_PATTERN: '^(.*)-<space>-xsahaa-rt.cfapps.(.*).hana.ondemand.com'
+     CORS: '[{"uriPattern": "^/sap/bc/ina/(.*)$", "allowedOrigin": [{"host":"<account>.<region>.sapanalytics.cloud", "protocol":"https"}], "allowedMethods": ["GET", "POST", "OPTIONS"], "allowedHeaders": ["Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization", "X-Sap-Cid", "X-Csrf-Token"], "exposeHeaders": ["Accept", "Authorization", "X-Requested-With", "X-Sap-Cid", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "X-Csrf-Token", "Content-Type"]}]'
 
 resources:
  - name: sales-hdi
